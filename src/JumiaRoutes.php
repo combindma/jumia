@@ -3,7 +3,6 @@
 
 namespace Combindma\Jumia;
 
-
 use Combindma\Jumia\Http\Controllers\JumiaController;
 use Illuminate\Support\Facades\Route;
 

@@ -83,29 +83,31 @@ class Jumia
 
     protected function convertToXml($array)
     {
-        return ArrayToXml::convert($array, ['rootElementName' => 'Request'], true, 'UTF-8', '1.0',);
+        return ArrayToXml::convert($array, ['rootElementName' => 'Request'], true, 'UTF-8', '1.0', );
     }
 
     protected function call($action, array $attributes = [])
     {
-        if (!$this->isEnabled()){
+        if (! $this->isEnabled()) {
             return 'Sync with Jumia Seller Center is disabled';
         }
 
-        $request = $this->buildRequest($action,'JSON',$attributes);
+        $request = $this->buildRequest($action, 'JSON', $attributes);
+
         return Http::get($request)->json();
     }
 
     protected function send($action, $feed = '')
     {
-        if (!$this->isEnabled()){
+        if (! $this->isEnabled()) {
             return 'Sync with Jumia Seller Center is disabled';
         }
-        $request = $this->buildRequest($action,'XML');
+        $request = $this->buildRequest($action, 'XML');
+
         return Http::withHeaders([
-            "Content-Type" => "text/xml;charset=utf-8"
+            "Content-Type" => "text/xml;charset=utf-8",
         ])->send("POST", $request, [
-            "body" => $feed
+            "body" => $feed,
         ])->json();
     }
 
@@ -128,13 +130,13 @@ class Jumia
             'Format' => $format,
 
             // The current time formatted as ISO8601
-            'Timestamp' => Carbon::parse($now)->format('Y-m-d\TH:i:sP')
+            'Timestamp' => Carbon::parse($now)->format('Y-m-d\TH:i:sP'),
         ], $attributes);
         // Sort parameters by name.
         ksort($parameters);
 
         // URL encode the parameters.
-        $encoded = array();
+        $encoded = [];
         foreach ($parameters as $name => $value) {
             $encoded[] = rawurlencode($name) . '=' . rawurlencode($value);
         }
@@ -148,6 +150,7 @@ class Jumia
 
         // Build Query String
         $queryString = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+
         return $this->api_url.'?'.$queryString;
     }
 }

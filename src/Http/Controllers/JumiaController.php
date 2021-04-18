@@ -2,12 +2,12 @@
 
 namespace Combindma\Jumia\Http\Controllers;
 
+use App\Models\Product;
 use Combindma\Jumia\Exports\ProductsExport;
 use Combindma\Jumia\Facades\Jumia;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\ArrayToXml\ArrayToXml;
-use App\Models\Product;
 
 class JumiaController extends Controller
 {
@@ -25,8 +25,9 @@ class JumiaController extends Controller
     public function getProducts()
     {
         //Get all products
-        $xmlFeed = ArrayToXml::convert($this->productsFeed(), ['rootElementName' => 'Request'], true, 'UTF-8', '1.0',);
+        $xmlFeed = ArrayToXml::convert($this->productsFeed(), ['rootElementName' => 'Request'], true, 'UTF-8', '1.0', );
         Storage::disk('root')->put('jumiaFeed.xml', $xmlFeed);
+
         return redirect('/jumiaFeed.xml');
     }
 
@@ -34,8 +35,9 @@ class JumiaController extends Controller
     public function getProductsImages()
     {
         //Get all products images
-        $xmlFeed = ArrayToXml::convert($this->imagesFeed(), ['rootElementName' => 'Request'], true, 'UTF-8', '1.0',);
+        $xmlFeed = ArrayToXml::convert($this->imagesFeed(), ['rootElementName' => 'Request'], true, 'UTF-8', '1.0', );
         Storage::disk('root')->put('jumiaImagesFeed.xml', $xmlFeed);
+
         return redirect('/jumiaImagesFeed.xml');
     }
 
@@ -44,6 +46,7 @@ class JumiaController extends Controller
     {
         Jumia::productUpdate($this->productsFeed());
         flash('Envoie effectué avec succès');
+
         return back();
     }
 
@@ -52,6 +55,7 @@ class JumiaController extends Controller
     {
         Jumia::productImage($this->imagesFeed());
         flash('Envoie effectué avec succès');
+
         return back();
     }
 
@@ -90,8 +94,8 @@ class JumiaController extends Controller
             $feed ['__custom:ProductImage:' . $index] = [
                 'SellerSku' => $product->sku,
                 'Images' => [
-                    '__custom:Image:0' => $product->featured_image_url()
-                ]
+                    '__custom:Image:0' => $product->featured_image_url(),
+                ],
             ];
             $loop = 1;
             foreach ($product->images() as $media) {
@@ -100,6 +104,7 @@ class JumiaController extends Controller
             }
             $index++;
         }
+
         return $feed;
     }
 
@@ -118,7 +123,7 @@ class JumiaController extends Controller
                 'Brand' => ucwords($product->brand_name),
                 'SellerSku' => $product->sku,
                 'ParentSku' => '',
-                'Price' =>  $product->getJumiaPrice(),
+                'Price' => $product->getJumiaPrice(),
                 'SalePrice' => '',
                 'SaleStartDate' => '',
                 'SaleEndDate' => '',
@@ -133,11 +138,12 @@ class JumiaController extends Controller
                     'ShortDescription' => $description['shortDescription'],
                     'WarrantyDuration' => config('jumia.default_warranty_duration'),
                     'Keywords' => ucwords($product->brand_name),
-                    'SeoIndex' => true
+                    'SeoIndex' => true,
                 ],
             ];
             $index++;
         }
+
         return $feed;
     }
 
@@ -171,7 +177,7 @@ class JumiaController extends Controller
                 'Keywords' => ucwords($product->brand_name),
                 'WarrantyDuration' => config('jumia.default_warranty_duration'),
                 'Variation' => '',
-                'MainImage' => $product->featured_image_url()
+                'MainImage' => $product->featured_image_url(),
             ];
             $loop = 2;
             foreach ($product->images() as $media) {
@@ -182,6 +188,7 @@ class JumiaController extends Controller
             }
             $index++;
         }
+
         return $feed;
     }
 }

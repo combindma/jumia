@@ -3,7 +3,7 @@
 
 namespace Combindma\Jumia\Traits;
 
-Trait HasJumiaFeed
+trait HasJumiaFeed
 {
     public function productFeed($name, $sku, $price, $quantity, $brand, $category, $description, $shortDescription)
     {
@@ -28,7 +28,7 @@ Trait HasJumiaFeed
                 'ShortDescription' => $shortDescription,
                 'WarrantyDuration' => config('jumia.default_warranty_duration'),
                 'Keywords' => ucwords($brand),
-                'SeoIndex' => true
+                'SeoIndex' => true,
             ],
         ];
 
@@ -41,14 +41,15 @@ Trait HasJumiaFeed
         $feed ['ProductImage'] = [
             'SellerSku' => $sku,
             'Images' => [
-                '__custom:Image:0' => $featuredImage
-            ]
+                '__custom:Image:0' => $featuredImage,
+            ],
         ];
         $loop = 1;
         foreach ($images as $media) {
             $feed ['ProductImage']['Images']['__custom:Image:' . $loop] = $media->getFullUrl();
             $loop++;
         }
+
         return $feed;
     }
 }

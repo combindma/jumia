@@ -2,9 +2,9 @@
 
 namespace Combindma\Jumia\Tests;
 
+use Combindma\Jumia\JumiaServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Combindma\Jumia\JumiaServiceProvider;
 
 class TestCase extends Orchestra
 {

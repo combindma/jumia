@@ -44,7 +44,7 @@ class ProductsExport implements FromArray, WithHeadings
             'Image5',
             'Image6',
             'Image7',
-            'Image8'
+            'Image8',
         ];
     }
 
