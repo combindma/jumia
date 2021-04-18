@@ -1,69 +1,92 @@
-# :package_description
+# This is my package Jumia
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vendor_slug/package_slug.svg?style=flat-square)](https://packagist.org/packages/vendor_slug/package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/vendor_slug/package_slug/run-tests?label=tests)](https://github.com/vendor_slug/package_slug/actions?query=workflow%3Arun-tests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/vendor_slug/package_slug/Check%20&%20fix%20styling?label=code%20style)](https://github.com/vendor_slug/package_slug/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/vendor_slug/package_slug.svg?style=flat-square)](https://packagist.org/packages/vendor_slug/package_slug)
-
-[](delete) 1) manually replace `:author_name, :author_username, auhor@domain.com, :vendor_name, vendor_slug, Vendor Name, :package_name, package_slug, skeleton, Skeleton, :package_description` with their correct values
-[](delete) in `CHANGELOG.md, LICENSE.md, README.md, ExampleTest.php, ModelFactory.php, Skeleton.php, SkeletonCommand.php, SkeletonFacade.php, SkeletonServiceProvider.php, TestCase.php, composer.json, create_skeleton_table.php.stub`
-[](delete) and delete `configure-skeleton.sh`
-
-[](delete) 2) You can also run `./configure-skeleton.sh` to do this automatically.
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/package-skeleton-laravel.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/package-skeleton-laravel)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/combindma/jumia.svg?style=flat-square)](https://packagist.org/packages/combindma/jumia)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/combindma/jumia/run-tests?label=tests)](https://github.com/combindma/jumia/actions?query=workflow%3Arun-tests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/combindma/jumia/Check%20&%20fix%20styling?label=code%20style)](https://github.com/combindma/jumia/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/combindma/jumia.svg?style=flat-square)](https://packagist.org/packages/combindma/jumia)
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require vendor_slug/package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag="package_slug-migrations"
-php artisan migrate
+composer require combindma/jumia
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag="package_slug-config"
+php artisan vendor:publish  --tag="jumia-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+
+    /*
+     * The user id, should be an email used in seller center.
+     */
+    'user_id' => env('JUMIA_USER_ID', ''),
+
+    /*
+     * The api url under which data will be sent.
+     */
+    'api_url' => env('JUMIA_API_URL', 'https://sellercenter-api.jumia.ma'),
+
+    /*
+     * The api key used for authentication.
+     */
+    'api_key' => env('JUMIA_API_KEY', null),
+
+    /*
+     * Enable or disable sync with the seller center. Useful for local development.
+     */
+    'enabled' => env('JUMIA_SYNC_ENABLED', false),
+
+    /*
+     * These brands will be deleted from title and description
+     */
+    'blackList' => [
+        'daniel wellington',
+        'tissot',
+        'guess',
+        'swatch',
+        'hugo boss',
+        'boss',
+        'balmain',
+        'longines',
+        'emporio armani',
+        'armani'
+    ],
+
+    /*
+     * This will be added to xml feed
+     */
+    'default_weight' => '0.5kg',
+
+    /*
+     * This will be added to xml feed
+     */
+    'default_warranty_duration' => 24,
+
+    /*
+     * This will be added to the price of product
+     */
+    'price_commission' => 15,
 ];
 ```
 
 ## Usage
 
-```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, Spatie!');
-```
+You should create JumiaHelper to generate name, description and price.
 
-## Testing
+You should also create JumiaProductAttributes trait and add it to Product Model.
 
-```bash
-composer test
-```
+Attach to Product Category these variables: meta[jumia_id_category], meta[jumia_string_category], meta[jumia_seo_category]
 
-## Changelog
+Add HasJumiaFeed trait to ProductController.
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Add 3 methods in ProductController: addProductToJumia, syncProductWithJumia, syncProductImageWithJumia and add their routes
 
 ## Contributing
 
@@ -75,7 +98,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Combind](https://github.com/combindma)
 - [All Contributors](../../contributors)
 
 ## License
