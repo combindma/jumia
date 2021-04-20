@@ -17,9 +17,9 @@ class ProductsExport implements FromArray, WithHeadings
     public function headings(): array
     {
         return [
-            'Nom',
+            'Name',
             'NameArMA',
-            'Marque',
+            'Brand',
             'PrimaryCategory',
             'SalePrice',
             'SaleStartDate' => '',
@@ -30,7 +30,7 @@ class ProductsExport implements FromArray, WithHeadings
             'ParentSku' => '',
             'Quantity',
             'SeoIndex',
-            'La Description',
+            'Description',
             'DescriptionArMA',
             'ShortDescription',
             'ProductWeight',
