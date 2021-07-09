@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "combindma/dashui": "^1.04",
+        "combindma/dashui": "^1.0",
         "illuminate/contracts": "^8.0",
         "maatwebsite/excel": "^3.1",
         "spatie/array-to-xml": "^2.16",
